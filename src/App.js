@@ -1,5 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
-import { BrowserRouter, Routes, Route, NavLink} from "react-router-dom"
+import { BrowserRouter, Routes, Route} from "react-router-dom"
 import { useState } from "react";
 import Header from "./components/Header";
 import FeedbackList from "./components/FeedbackList";
@@ -9,22 +8,16 @@ import FeedbackForm from "./components/FeedbackForm";
 import AboutPage from "./pages/AboutPage";
 import AboutIcon from './components/AboutIcon';
 import Post from './components/Post';
+import { FeedbackProvider } from './context/FeedbackContext';
+
+
+
 
 function App() {
-  const [feedback, setFeedback] = useState(FeedbackData);
-
-  const addFeedback = (newFeedback) => {
-    newFeedback.id = uuidv4();
-    setFeedback([newFeedback, ...feedback]);
-  };
-
-  const deleteFeedback = (id) => {
-    if (window.confirm("ARe you sure you want to delete this?")) {
-      setFeedback(feedback.filter((item) => item.id !== id));
-    }
-  };
 
   return (
+<FeedbackProvider>
+
   <BrowserRouter>
     <Header/>
     <div className="container">
@@ -34,9 +27,9 @@ function App() {
           path="/" 
           element={
             <div>
-              <FeedbackForm handleAdd={addFeedback} />
-              <FeedbackStats feedback={feedback} />
-              <FeedbackList feedback={feedback} handleDelete={deleteFeedback} />
+              <FeedbackForm />
+              <FeedbackStats/>
+              <FeedbackList />
             </div>
           } 
         />
@@ -50,6 +43,7 @@ function App() {
     </div>
     
   </BrowserRouter>
+  </FeedbackProvider>
 );
   
 }
